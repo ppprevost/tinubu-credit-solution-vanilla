@@ -1,11 +1,11 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import { Broker } from "../models";
@@ -46,15 +46,11 @@ export default function MaxWidthDialog({
   const onSubmit = (data: Broker) => {
     postBroker(data);
   };
+  console.log(formState);
 
   return (
     <React.Fragment>
-      <Dialog
-        fullWidth={true}
-        maxWidth={"sm"}
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog fullWidth maxWidth={"sm"} open={open} onClose={handleClose}>
         <DialogTitle>Add manually</DialogTitle>
         <DialogContent>
           <Box
@@ -68,10 +64,48 @@ export default function MaxWidthDialog({
             }}
           >
             <FormControl sx={{ mt: 2, width: "100%", gap: 2 }}>
-              <TextField label="Legal Name" {...register("legalName")} />
-              <TextField label="Address" {...register("address.street")} />
-              <TextField label="City" {...register("address.city")} />
-              <TextField label="Country" {...register("country")} />
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Legal Name"
+                  {...register("legalName")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.legalName?.message}
+                </Typography>
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Address"
+                  {...register("address.street")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.address?.street?.message}
+                </Typography>
+              </Box>
+
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="City"
+                  {...register("address.city")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.address?.city?.message}
+                </Typography>
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Country"
+                  {...register("country")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.country?.message}
+                </Typography>
+              </Box>
+
               <input
                 type="hidden"
                 value="0000"
@@ -85,17 +119,16 @@ export default function MaxWidthDialog({
           <Button variant="text" onClick={handleClose}>
             Close
           </Button>
-          {isPending ? (
-            <LoadingButton loading variant="outlined" />
-          ) : (
-            <Button
-              variant="outlined"
-              onClick={handleSubmit(onSubmit, (e) => console.log(e))}
-              type="submit"
-            >
-              Save
-            </Button>
-          )}
+
+          <Button
+            variant="outlined"
+            onClick={
+              (handleSubmit(onSubmit))
+            }
+            type="submit"
+          >
+            {!isPending ? "Save" : <CircularProgress />}
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
