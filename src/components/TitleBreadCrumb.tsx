@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
-const HeaderStyled = styled(Box)(({ theme }) => ({
+const HeaderStyled = styled(Box)(() => ({
   alignItems: "start",
   justifyContent: "space-between",
   display: "flex",
@@ -37,9 +37,7 @@ const MainTitle = () => {
           <Chip label="Draft" />
         </Box>
       </div>
-      <Button variant="contained" >
-        Issue the proposal
-      </Button>
+      <Button variant="contained">Issue the proposal</Button>
     </HeaderStyled>
   );
 };

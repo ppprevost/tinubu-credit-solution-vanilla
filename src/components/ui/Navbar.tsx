@@ -3,7 +3,7 @@ import { drawerWidth } from "./MenuDrawer";
 import { Toolbar, IconButton, Box, Typography } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import MoreIcon from "@mui/icons-material/MoreVert";
+
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";

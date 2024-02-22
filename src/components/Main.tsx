@@ -2,7 +2,6 @@ import { Box, Toolbar, Grid, Tabs, Tab } from "@mui/material";
 
 import MainAside from "./MainAside";
 import TitleBreadCrumb from "./TitleBreadCrumb";
-import AppTabs from "./Tabs";
 import Parties from "./Parties";
 import { useState } from "react";
 
@@ -42,7 +41,7 @@ const AppMain = () => {
               aria-label="basic tabs example"
             >
               {tabsText.map((tab, index) => (
-                <Tab label={tab} {...a11yProps(index)} />
+                <Tab key={tab} label={tab} {...a11yProps(index)} />
               ))}
             </Tabs>
           </Box>

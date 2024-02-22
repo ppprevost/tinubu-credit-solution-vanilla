@@ -5,7 +5,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { ThemeProvider, createTheme } from "@mui/material";
 import AppProvider from "./contexts/AppContext";
-import Header from "./components/ui/Navbar";
+import Navbar from "./components/ui/Navbar";
 import Drawer from "./components/ui/MenuDrawer";
 import Main from "./components/Main";
 import { CssBaseline, Box } from "@mui/material";
@@ -21,9 +21,9 @@ function App() {
     <AppProvider>
       <ThemeProvider theme={defaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", flexGrow:1, width:"100%" }}>
             <CssBaseline />
-            <Header />
+            <Navbar />
             <Drawer />
             <Main />
           </Box>

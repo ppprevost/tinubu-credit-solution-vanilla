@@ -1,4 +1,4 @@
-import { Toolbar, Grid, Box, Paper, Container, Chip } from "@mui/material";
+import { Box, Container, Chip } from "@mui/material";
 import BlockAside from "./BlockAside";
 
 const FirstBlock = {

@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material";
+import { Theme, ThemeOptions } from "@mui/material";
 
 const primary = "#26BAD4";
 
@@ -60,15 +60,15 @@ export default {
       },
     },
     MuiButton: {
-      styleOverrides: (themeParam: Theme) => ({
-        root: {
-          backgroundColor: themeParam.palette.primary,
+      styleOverrides: {
+        contained: { 
+          backgroundColor: primary,
           color: "white",
           "&:hover": {
             backgroundColor: "#125699",
           },
         },
-      }),
+      },
     },
     MuiCssBaseline: {
       styleOverrides: (themeParam: Theme) => `
@@ -85,4 +85,4 @@ export default {
         `,
     },
   },
-};
+} as ThemeOptions;

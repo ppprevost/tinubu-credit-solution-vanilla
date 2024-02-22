@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@uidotdev/usehooks";
 import InfoBroker from "./InfoBroker";
 import { Search } from "@mui/icons-material";
-
+import parse from "html-react-parser";
 const idAddBroker = 220000;
 
 const Broker = () => {
@@ -36,7 +36,11 @@ const Broker = () => {
       ),
   });
 
-  const { data: broker, isLoading: isLoadingBroaker } = useQuery<BrokerWithId>({
+  const {
+    data: broker,
+    isLoading: isLoadingBroaker,
+    isError: isErrorBroker,
+  } = useQuery<BrokerWithId>({
     enabled: !!currentBroker,
     queryKey: ["broker", currentBroker],
     queryFn: () =>
@@ -69,7 +73,6 @@ const Broker = () => {
         </Typography>
         <Autocomplete
           sx={{
-            width: "100%",
             "& .MuiAutocomplete-paper": {
               backgroundColor: "#363636",
             },
@@ -77,7 +80,10 @@ const Broker = () => {
           filterOptions={(options) => {
             if (options?.length) {
               const result = [...options];
-              result.push({ id: idAddBroker, text: "or Add manually" });
+              result.push({
+                id: idAddBroker,
+                text: "<span>or <u>Add manually</u></span>",
+              });
               return result;
             }
             return options;
@@ -100,13 +106,14 @@ const Broker = () => {
                 <Typography
                   variant="body1"
                   onClick={() => {
-                    methods.reset();
+                    setCurrentBroaker(null);
+                    //methods.reset();
                     setOpenModal(!openModal);
                   }}
                 >
                   <span>or </span>
                   <Link href="#" color="inherit">
-                    Add Manually
+                    Add manually
                   </Link>
                 </Typography>
               </Box>
@@ -117,7 +124,7 @@ const Broker = () => {
             if (event && value) {
               setQuery("");
               if (value.id === idAddBroker) {
-                methods.reset();
+              //  methods.reset();
                 return setOpenModal(!openModal);
               }
               return setCurrentBroaker(value.id);
@@ -134,7 +141,7 @@ const Broker = () => {
           }}
           id="combo-box-demo"
           options={brokers ?? []}
-          getOptionLabel={(option) => option.text}
+          getOptionLabel={(option) => parse(option.text) as string}
           style={{ width: "100%" }}
           renderInput={(params) => {
             if (params.inputProps.value === "") {
@@ -158,6 +165,7 @@ const Broker = () => {
 
         {isLoadingBroaker && <CircularProgress />}
         {brokerSuccess && broker && <InfoBroker />}
+        {isErrorBroker && <span>an error occured</span>}
       </Paper>
     </FormProvider>
   );

@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import capitalize from "lodash.capitalize";
-const LittleTitleBlock = ({children}) => {
+
+const LittleTitleBlock = ({ children }: { children: string }) => {
   return (
     <Typography
       variant="body2"
