@@ -1,0 +1,7 @@
+[
+  { "name": "dashboard" },
+  { "name": "submissions" },
+  { "name": "quotations" },
+  { "name": "policies" },
+  { "name": "audit log" }
+]
