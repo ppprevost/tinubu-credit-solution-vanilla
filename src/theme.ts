@@ -26,6 +26,21 @@ export default {
     background: { paper: "#333333", default: "#FFF" },
   },
   components: {
+    MuiSelect: {
+      styleOverrides: {
+        option: {
+          backgroundColor: "white",
+        },
+        select: {
+          backgroundColor: "white",
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: { backgroundColor: "white" },
+      },
+    },
     MuiDialog: {
       styleOverrides: {
         root: { backgroundColor: "white" },
@@ -38,12 +53,7 @@ export default {
           backgroundColor: "white",
           border: "Opx solid black",
         },
-        option: {
-          borderBottom: "1px solid grey",
-          "&:last-child": {
-            borderBottom: "none",
-          },
-        },
+       
       },
     },
     MuiInput: {
@@ -61,7 +71,7 @@ export default {
     },
     MuiButton: {
       styleOverrides: {
-        contained: { 
+        contained: {
           backgroundColor: primary,
           color: "white",
           "&:hover": {

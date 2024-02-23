@@ -10,8 +10,6 @@ import {
 import Toolbar from "@mui/material/Toolbar";
 import Star from "@mui/icons-material/Star";
 
-import { List } from "@mui/icons-material";
-
 export const drawerWidth: number = 240;
 
 const AppDrawer = () => {
@@ -37,7 +35,7 @@ const AppDrawer = () => {
             "Quotations",
             "Policies",
             "Audit Log",
-          ].map((text, index) => (
+          ].map((text) => (
             <ListItem sx={{ color: "white" }} key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon sx={{ color: "#fff", opacity: 0.5 }}>

@@ -11,13 +11,14 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { BrokerWithId, BrokerSchemaWithId, BrokerSchema } from "../models";
 import { useForm, FormProvider } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CreateBroker from "./CreateBroker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebounce } from "@uidotdev/usehooks";
 import InfoBroker from "./InfoBroker";
 import { Search } from "@mui/icons-material";
-import parse from "html-react-parser";
+import ListAutoComplete from "./AutocompleteList";
+
 const idAddBroker = 220000;
 
 const Broker = () => {
@@ -49,15 +50,26 @@ const Broker = () => {
 
   const methods = useForm({
     resolver: zodResolver(BrokerSchema),
+    defaultValues: {},
   });
 
   useEffect(() => {
     if (broker) {
       methods.reset(broker);
+    } else {
+      methods.reset({});
     }
   }, [broker, methods]);
 
   const { success: brokerSuccess } = BrokerSchemaWithId.safeParse(broker);
+
+  const addNewBroker = useCallback(() => {
+    methods.reset();
+    setOpenModal(!openModal);
+  }, [methods, openModal]);
+
+  const showSearchIcon =
+    !broker?.legalName && !isLoadingBroakers && !brokers && !isLoadingBroakers;
 
   return (
     <FormProvider {...methods}>
@@ -67,12 +79,13 @@ const Broker = () => {
           open={openModal}
           handleClose={() => setOpenModal(false)}
         />
-        <Typography component="h5">Managing broker</Typography>
+        <Typography variant="h5">Managing broker</Typography>
         <Typography sx={{ color: "#757575", fontSize: "14px", marginTop: 0 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
         <Autocomplete
           sx={{
+            marginTop: 3,
             "& .MuiAutocomplete-paper": {
               backgroundColor: "#363636",
             },
@@ -88,14 +101,7 @@ const Broker = () => {
             }
             return options;
           }}
-          popupIcon={
-            !broker?.legalName &&
-            !isLoadingBroakers &&
-            !brokers &&
-            !isLoadingBroakers ? (
-              <Search />
-            ) : null
-          }
+          popupIcon={showSearchIcon ? <Search /> : null}
           noOptionsText={
             isLoadingBroakers ? (
               <CircularProgress />
@@ -106,9 +112,7 @@ const Broker = () => {
                 <Typography
                   variant="body1"
                   onClick={() => {
-                    setCurrentBroaker(null);
-                    //methods.reset();
-                    setOpenModal(!openModal);
+                    addNewBroker();
                   }}
                 >
                   <span>or </span>
@@ -124,16 +128,12 @@ const Broker = () => {
             if (event && value) {
               setQuery("");
               if (value.id === idAddBroker) {
-              //  methods.reset();
-                return setOpenModal(!openModal);
+                return addNewBroker();
               }
               return setCurrentBroaker(value.id);
             }
           }}
           onInputChange={(event, newInput) => {
-            if (newInput === "or Add manually") {
-              return setQuery("");
-            }
             if (event?.type !== "click") {
               setQuery(newInput);
               setCurrentBroaker(null);
@@ -141,12 +141,18 @@ const Broker = () => {
           }}
           id="combo-box-demo"
           options={brokers ?? []}
-          getOptionLabel={(option) => parse(option.text) as string}
+          getOptionLabel={(option) => option.text as string}
           style={{ width: "100%" }}
+          renderOption={(props, option) => (
+            <ListAutoComplete key={option.text} option={option} props={props} />
+          )}
           renderInput={(params) => {
             if (params.inputProps.value === "") {
               setCurrentBroaker(null);
-              methods.reset();
+
+              if (document.querySelector("#combo-box-demo")?.value) {
+                document.querySelector("#combo-box-demo").value = "";
+              }
             }
             return (
               <TextField
@@ -163,7 +169,7 @@ const Broker = () => {
           open={Boolean(debounceQuery?.length)}
         />
 
-        {isLoadingBroaker && <CircularProgress />}
+        {isLoadingBroaker && <CircularProgress sx={{ marginTop: 3 }} />}
         {brokerSuccess && broker && <InfoBroker />}
         {isErrorBroker && <span>an error occured</span>}
       </Paper>

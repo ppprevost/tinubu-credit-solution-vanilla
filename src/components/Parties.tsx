@@ -6,13 +6,13 @@ const Parties = () => {
   return (
     <Box sx={{ display: "flex", gap: 3, flexDirection: "column" }}>
       <Paper sx={{ bgcolor: "background.default", marginTop: "20px", p: 2 }}>
-        <Typography component="h5">Joint insured</Typography>
+        <Typography variant="h5">Joint insured</Typography>
         <Typography sx={{ color: "#757575", fontSize: "14px", marginTop: 0 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
 
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", marginTop:3 }}
           id="outlined-basic"
           label="Outlined"
           variant="outlined"
@@ -26,12 +26,12 @@ const Parties = () => {
       </Paper>
    <Broker />
       <Paper sx={{ bgcolor: "background.default", p: 2 }}>
-        <Typography component="h5">Introducing broker</Typography>
-        <Typography component="h5">
+        <Typography variant="h5">Introducing broker</Typography>
+        <Typography variant="body1">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", marginTop:3 }}
           id="outlined-basic"
           label="Name"
           variant="outlined"

@@ -11,6 +11,7 @@ import LittleTitleBlock from "./ui/LittleTitleBlock";
 
 const InfoBroker = () => {
   const methods = useFormContext();
+  const contact = methods.getValues("contact");
 
   return (
     <Box>
@@ -39,17 +40,19 @@ const InfoBroker = () => {
           }}
           {...methods.register("commission")}
         />
-
         <Select
-          defaultValue={methods.getValues("contact")}
           sx={{ width: "100%" }}
           labelId="contact"
           id="select"
           label="contact"
           {...methods.register("contact")}
         >
-          {[methods.getValues("contact")].map((option, index) => (
-            <MenuItem key={index} value={option}>
+          {[contact].map((option, index) => (
+            <MenuItem
+              sx={{ backgroundColor: "white" }}
+              key={index}
+              value={option}
+            >
               {option}
             </MenuItem>
           ))}

@@ -19,7 +19,7 @@ const BlockAside = ({ block }: BlockAsideProps) => {
       {Object.entries(block.data).map(([key, val]) => (
         <div key={key}>
           <LittleTitleBlock>{key}</LittleTitleBlock>
-          <p>{val}</p>
+          {typeof val === "string" ? <p>{val}</p> : val}
         </div>
       ))}
     </Paper>

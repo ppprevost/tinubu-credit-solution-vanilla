@@ -1,4 +1,4 @@
-import { Box, Container, Chip } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import BlockAside from "./BlockAside";
 
 const FirstBlock = {
@@ -26,12 +26,10 @@ const displayBlocks = [FirstBlock, secondBlock];
 
 const MainAside = () => {
   return (
-    <Box>
-      <Container>
-        {displayBlocks.map((block) => (
-          <BlockAside key={block.title} block={block} />
-        ))}
-      </Container>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      {displayBlocks.map((block) => (
+        <BlockAside key={block.title} block={block} />
+      ))}
     </Box>
   );
 };

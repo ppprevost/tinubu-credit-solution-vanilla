@@ -1,15 +1,15 @@
 import { z } from "zod";
 
 export const BrokerSchema = z.object({
-  legalName: z.string(),
+  legalName: z.string().min(1),
   commission: z.number().optional(),
   contact: z.string().optional(),
   address: z.object({
-    street: z.string(),
-    city: z.string(),
-    postalCode: z.string(),
+    street: z.string().min(1),
+    city: z.string().min(1),
+    postalCode: z.string().min(1),
   }),
-  country: z.string(),
+  country: z.string().min(1),
 });
 
 export const IdSchema = z.object({ id: z.number() });
