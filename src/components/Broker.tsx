@@ -50,23 +50,46 @@ const Broker = () => {
 
   const methods = useForm({
     resolver: zodResolver(BrokerSchema),
-    defaultValues: {},
+    defaultValues: { commission: 0 },
   });
 
+  const city =
+    methods.getValues("address.city") ?? methods.watch("address.city");
+  const { success: brokerSuccess } = BrokerSchemaWithId.safeParse(broker);
   useEffect(() => {
-    if (broker) {
+    if (broker && brokerSuccess) {
       methods.reset(broker);
     } else {
       methods.reset({});
     }
-  }, [broker, methods]);
-
-  const { success: brokerSuccess } = BrokerSchemaWithId.safeParse(broker);
+  }, [broker, methods, brokerSuccess]);
 
   const addNewBroker = useCallback(() => {
-    methods.reset();
+    methods.reset({});
     setOpenModal(!openModal);
   }, [methods, openModal]);
+
+  const showNoResults = useCallback(() => {
+    return isLoadingBroakers ? (
+      <CircularProgress />
+    ) : (
+      <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+        <span>No results</span>
+        <Divider />
+        <Typography
+          variant="body1"
+          onClick={() => {
+            addNewBroker();
+          }}
+        >
+          <span>or </span>
+          <Link href="#" color="inherit">
+            Add manually
+          </Link>
+        </Typography>
+      </Box>
+    );
+  }, [addNewBroker, isLoadingBroakers]);
 
   const showSearchIcon =
     !broker?.legalName && !isLoadingBroakers && !brokers && !isLoadingBroakers;
@@ -102,27 +125,7 @@ const Broker = () => {
             return options;
           }}
           popupIcon={showSearchIcon ? <Search /> : null}
-          noOptionsText={
-            isLoadingBroakers ? (
-              <CircularProgress />
-            ) : (
-              <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
-                <span>No results</span>
-                <Divider />
-                <Typography
-                  variant="body1"
-                  onClick={() => {
-                    addNewBroker();
-                  }}
-                >
-                  <span>or </span>
-                  <Link href="#" color="inherit">
-                    Add manually
-                  </Link>
-                </Typography>
-              </Box>
-            )
-          }
+          noOptionsText={showNoResults()}
           disablePortal
           onChange={(event, value) => {
             if (event && value) {
@@ -137,6 +140,17 @@ const Broker = () => {
             if (event?.type !== "click") {
               setQuery(newInput);
               setCurrentBroaker(null);
+            } else {
+              if (newInput === "" && broker) {
+                methods.reset({});
+                setCurrentBroaker(null);
+                const actualInput = document.querySelector(
+                  "#combo-box-demo"
+                ) as HTMLInputElement;
+                if (actualInput) {
+                  actualInput.value = "";
+                }
+              }
             }
           }}
           id="combo-box-demo"
@@ -147,13 +161,6 @@ const Broker = () => {
             <ListAutoComplete key={option.text} option={option} props={props} />
           )}
           renderInput={(params) => {
-            if (params.inputProps.value === "") {
-              setCurrentBroaker(null);
-
-              if (document.querySelector("#combo-box-demo")?.value) {
-                document.querySelector("#combo-box-demo").value = "";
-              }
-            }
             return (
               <TextField
                 {...params}
@@ -170,7 +177,7 @@ const Broker = () => {
         />
 
         {isLoadingBroaker && <CircularProgress sx={{ marginTop: 3 }} />}
-        {brokerSuccess && broker && <InfoBroker />}
+        {city && <InfoBroker />}
         {isErrorBroker && <span>an error occured</span>}
       </Paper>
     </FormProvider>

@@ -21,7 +21,7 @@ function App() {
     <AppProvider>
       <ThemeProvider theme={defaultTheme}>
         <QueryClientProvider client={queryClient}>
-          <Box sx={{ display: "flex", flexGrow:1, width:"100%" }}>  
+          <Box sx={{ display: "flex", flexGrow: 1, width: "100vw" }}>
             <CssBaseline />
             <Navbar />
             <Drawer />

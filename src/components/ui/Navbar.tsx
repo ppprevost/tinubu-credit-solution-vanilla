@@ -61,7 +61,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const Img = styled("img")(() => ({
   color: "#FFF",
-  backgroundColor: "#FFF",
+  filter: "brightness(6.5)" ,
   opacity: "1",
 }));
 
@@ -90,7 +90,12 @@ const Header = () => {
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
-        <Img height="30" src={tinubuLogo} alt="tinubu logo" />
+        <Img
+        
+          height="30"
+          src={tinubuLogo}
+          alt="tinubu logo"
+        />
         <Typography
           color="secondary"
           component="span"

@@ -6,7 +6,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
 import { Broker } from "../models";
 import { TextField } from "@mui/material";
 import { useFormContext } from "react-hook-form";
@@ -22,7 +21,8 @@ export default function MaxWidthDialog({
   handleClose: () => void;
   setCurrentBroker: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
-  const { handleSubmit, register, formState } = useFormContext<Broker>();
+  const { handleSubmit, register, formState, getValues } =
+    useFormContext<Broker>();
 
   const { mutate: postBroker, isPending } = useMutation<
     { id: number },
@@ -46,91 +46,94 @@ export default function MaxWidthDialog({
   const onSubmit = (data: Broker) => {
     postBroker(data);
   };
-  console.log(formState);
 
   return (
     <React.Fragment>
       <Dialog fullWidth maxWidth={"sm"} open={open} onClose={handleClose}>
         <DialogTitle>Add manually</DialogTitle>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
+        <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              width: "100%",
+            }}
+          >
             <Box
-              noValidate
-              component="form"
+              component={"div"}
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                m: "auto",
+                mt: 2,
                 width: "100%",
+                gap: 2,
               }}
             >
-              <FormControl
-                component={"div"}
-                sx={{ mt: 2, width: "100%", gap: 2 }}
-              >
-                <Box>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    label="Legal Name"
-                    {...register("legalName")}
-                  />
-                  <Typography variant="body1" color="error">
-                    {formState.errors.legalName?.message}
-                  </Typography>
-                </Box>
-                <Box>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    label="Address"
-                    {...register("address.street")}
-                  />
-                  <Typography variant="body1" color="error">
-                    {formState.errors.address?.street?.message}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    label="City"
-                    {...register("address.city")}
-                  />
-                  <Typography variant="body1" color="error">
-                    {formState.errors.address?.city?.message}
-                  </Typography>
-                </Box>
-                <Box>
-                  <TextField
-                    sx={{ width: "100%" }}
-                    label="Country"
-                    {...register("country")}
-                  />
-                  <Typography variant="body1" color="error">
-                    {formState.errors.country?.message}
-                  </Typography>
-                </Box>
-
-                <input
-                  type="hidden"
-                  value="0000"
-                  {...register("address.postalCode")}
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Legal Name"
+                  {...register("legalName")}
                 />
-              </FormControl>
+                <Typography variant="body1" color="error">
+                  {formState.errors.legalName?.message}
+                </Typography>
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Address"
+                  {...register("address.street")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.address?.street?.message}
+                </Typography>
+              </Box>
+
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="City"
+                  {...register("address.city")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.address?.city?.message}
+                </Typography>
+              </Box>
+              <Box>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Country"
+                  {...register("country")}
+                />
+                <Typography variant="body1" color="error">
+                  {formState.errors.country?.message}
+                </Typography>
+              </Box>
+
+              <input
+                type="hidden"
+                value="0000"
+                {...register("address.postalCode")}
+              />
             </Box>
-          </DialogContent>
+          </Box>
+        </DialogContent>
 
-          <DialogActions>
-            <Button variant="text" onClick={handleClose}>
-              Close
+        <DialogActions>
+          <Button variant="text" onClick={handleClose}>
+            Close
+          </Button>
+
+          {isPending ? (
+            <LoadingButton loading />
+          ) : (
+            <Button onClick={handleSubmit(onSubmit)} type="submit">
+              Save
             </Button>
-
-            {isPending ? (
-              <LoadingButton variant="contained" loading />
-            ) : (
-              <Button type="submit">Save</Button>
-            )}
-          </DialogActions>
-        </form>
+          )}
+        </DialogActions>
       </Dialog>
     </React.Fragment>
   );

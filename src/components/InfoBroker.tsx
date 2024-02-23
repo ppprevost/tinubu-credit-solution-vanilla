@@ -6,12 +6,13 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import LittleTitleBlock from "./ui/LittleTitleBlock";
 
 const InfoBroker = () => {
   const methods = useFormContext();
-  const contact = methods.getValues("contact");
+  const contact =
+    methods.getValues("contact") ?? (methods.watch("contact") as string);
 
   return (
     <Box>
@@ -34,28 +35,20 @@ const InfoBroker = () => {
           sx={{ width: "100%" }}
           label="commission"
           variant="outlined"
-          type="text"
+          type="number"
           InputProps={{
             endAdornment: <InputAdornment position="end">%</InputAdornment>,
           }}
           {...methods.register("commission")}
         />
         <Select
-          sx={{ width: "100%" }}
-          labelId="contact"
-          id="select"
-          label="contact"
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           {...methods.register("contact")}
+          value={contact}
+          label="Age"
         >
-          {[contact].map((option, index) => (
-            <MenuItem
-              sx={{ backgroundColor: "white" }}
-              key={index}
-              value={option}
-            >
-              {option}
-            </MenuItem>
-          ))}
+          <MenuItem value={contact}>{contact}</MenuItem>
         </Select>
       </Box>
     </Box>

@@ -29,13 +29,9 @@ const AppMain = () => {
   };
   return (
     <Container maxWidth={false} disableGutters>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <TitleBreadCrumb />
-
         <Grid container spacing={2}>
           <Grid item xs={9}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

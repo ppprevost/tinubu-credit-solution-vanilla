@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const BrokerSchema = z.object({
   legalName: z.string().min(1),
-  commission: z.number().optional(),
+  commission: z.number().or(z.string()).optional(),
   contact: z.string().optional(),
   address: z.object({
     street: z.string().min(1),
